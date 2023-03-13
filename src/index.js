@@ -16,23 +16,25 @@ refs.searchBox.addEventListener("input", debounce(onInput, DEBOUNCE_DELAY));
 function onInput(e) {
   const textInput = e.target.value.trim();
   cleanMarkup();
-  fetchCountries(textInput)
-    .then((datasCountries) => {
-      if (datasCountries.length > 10) {
-        Notiflix.Notify.info(
-          "Too many matches found. Please enter a more specific name."
-        );
-        console.log("!!!100");
-      } else if (datasCountries.length >= 2 && datasCountries.length <= 10) {
-        console.log("10");
-        countryListRender(datasCountries);
-      } else if (datasCountries.length === 1) {
-        countryOneRender(datasCountries);
-      }
-    })
-    .catch((error) => {
-      Notiflix.Notify.failure("Oops, there is no country with that name");
-    });
+  if (textInput !== "") {
+    fetchCountries(textInput)
+      .then((datasCountries) => {
+        if (datasCountries.length > 10) {
+          Notiflix.Notify.info(
+            "Too many matches found. Please enter a more specific name."
+          );
+          console.log("!!!100");
+        } else if (datasCountries.length >= 2 && datasCountries.length <= 10) {
+          console.log("10");
+          countryListRender(datasCountries);
+        } else if (datasCountries.length === 1) {
+          countryOneRender(datasCountries);
+        }
+      })
+      .catch((error) => {
+        Notiflix.Notify.failure("Oops, there is no country with that name");
+      });
+  }
 }
 
 function countryListRender(countries) {
